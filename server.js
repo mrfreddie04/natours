@@ -15,7 +15,7 @@ console.log('Environment: ', process.env.NODE_ENV);
 let db;
 let server;
 
-const stop = async () => {
+const stop = async (exit=true) => {
   try {
     if(db && db.readyState === 1) {
       await db.disconnect();      
@@ -26,7 +26,7 @@ const stop = async () => {
       console.log("Express stopped");
     }  
   } finally {
-    process.exit(1);
+    if(exit) process.exit(1);
   } 
 }
 
@@ -61,15 +61,20 @@ const start = async () => {
   }
 };
 
-process.on("unhandledRejection", async (err)=>{
+process.on("unhandledRejection", (err)=>{
   console.log("UNHANDLED REJECTION: ", err.name, err.message);
-  await stop();
+  stop();
 });
 
-process.on("uncaughtException", async (err) => {
+process.on("uncaughtException", (err) => {
   console.log("UNHANDLED EXCEPTION: ", err.name, err.message);
-  await stop();  
+  stop();  
 })
+
+process.on("SIGTERM", () => {
+  console.log("SIGTERM RECEIVED. Shutting down gracefully");
+  stop(false); //do not have to call process.exit()
+});
 
 start();
 console.log('Server is starting...');
