@@ -33,19 +33,22 @@ const createToken = (id) => promisify(jwt.sign)({id: id}, process.env.JWT_SECRET
 const verifyToken = (token) => promisify(jwt.verify)(token, process.env.JWT_SECRET);
 //const verifyToken = (token) => jwtverify(token, process.env.JWT_SECRET);
 
-const createAndSendToken = async (res, {statusCode, user, sendUser}) => {
+const createAndSendToken = async (req, res, {statusCode, user, sendUser}) => {
 
   const token = await createToken(user._id);
   const cookieOptions =  {
     //will be deleted by the browser after whne expired
     expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000), 
     //cannot be accessed or modified in any way by the browser - browser can only receives, store, and send back
-    httpOnly: true
+    httpOnly: true,
+    secure: req.secure || req.headers('x-forwarded-proto') === "https"
   };
 
   //in prod - only sent over https
-  if(process.env.NODE_ENV === "production")
-      cookieOptions.secure = true;
+  // if(process.env.NODE_ENV === "production")
+  //     cookieOptions.secure = true;
+  // if(req.secure || req.headers('x-forwarded-proto') === "https")
+  //     cookieOptions.secure = true;
 
   res.cookie("jwt", token, cookieOptions);
 
@@ -72,7 +75,7 @@ module.exports.signup = catchAsync( async (req, res, next) =>{
   //console.log(uploadPhotoURL);
   await new Email(newUser, uploadPhotoURL).sendWelcome();
 
-  await createAndSendToken(res, {statusCode:201, user:newUser, sendUser:true});
+  await createAndSendToken(req, res, {statusCode:201, user:newUser, sendUser:true});
 });
 
 module.exports.signin = catchAsync( async (req, res, next) =>{
@@ -89,7 +92,7 @@ module.exports.signin = catchAsync( async (req, res, next) =>{
   if(!pwd) return next(new AppError("Invalid Credentials", 401));  
 
   //4) Create token & send response
-  await createAndSendToken(res, {statusCode:200, user:user})
+  await createAndSendToken(req, res, {statusCode:200, user:user})
 });
 
 module.exports.signout = (req, res, next) =>{
@@ -243,7 +246,7 @@ module.exports.resetPassword = catchAsync(async (req, res, next) => {
   await user.save();  
 
   //5) Log the user in 
-  await createAndSendToken(res, {statusCode:201, user:user})
+  await createAndSendToken(req, res, {statusCode:201, user:user})
 
 });
 
@@ -267,5 +270,5 @@ module.exports.updatePassword = catchAsync(async (req, res, next) => {
   await user.save();
 
   //5) generate & return token
-  await createAndSendToken(res, {statusCode:201, user:user})
+  await createAndSendToken(req, res, {statusCode:201, user:user})
 });  

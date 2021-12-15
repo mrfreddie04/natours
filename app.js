@@ -22,13 +22,14 @@ const viewRouter = require('./routes/view-routes');
 //Create express app
 const app = express();
 
+//Make our app trust proxies (heroku acts as a proxy)
+app.enable('trust proxy');
+
 //1. Express settings - set up template engine
 app.set("view engine","pug");
 app.set("views",path.join(__dirname,"views"));
 
 //2. Global Middlewares - applicable to ALL routes
-app.enable('trust proxy');
-
 //Enable access to static files
 app.use(express.static(path.join(__dirname,"public")));
 
