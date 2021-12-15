@@ -17,7 +17,7 @@ export const bookTour = async (tourid) => {
     if(res.data.status !== "success") return showAlert("error", "Something went wrong");  
     const { session } = res.data;
 
-    //2) Create checkout fomr and charge CC
+    //2) Create checkout form and charge CC
     const result = await stripe.redirectToCheckout({
       sessionId: session.id
     });    
