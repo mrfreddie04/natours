@@ -7,6 +7,7 @@ const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
 const hpp = require("hpp");
 const morgan = require('morgan');
+const compression = require("compression");
 
 const AppError = require("./utils/app-error");
 const cspConfig = require("./utils/csp-config");
@@ -66,10 +67,11 @@ app.use(hpp({
   ]
 }));
 
+app.use(compression());
+
 //Test Middleware - Add request timestamp to request
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
-  //console.log("Cookies",req.cookies);
   next();
 });
 

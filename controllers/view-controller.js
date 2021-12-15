@@ -95,8 +95,7 @@ module.exports.getMyTours = catchAsync( async (req, res, next )  => {
   });  
 });
 
-module.exports.updateUserData = catchAsync( async (req, res, next )  => {
-  console.log("/submit-user-data");
+module.exports.updateUserData = catchAsync( async (req, res, next )  => {  
   //get data
   const { name, email } = req.body;
 

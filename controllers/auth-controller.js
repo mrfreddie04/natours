@@ -69,7 +69,7 @@ module.exports.signup = catchAsync( async (req, res, next) =>{
 
   //const resetToken = newUser.createPasswordResetToken();
   const uploadPhotoURL = `${req.protocol==="https"?"https":"http"}://${req.get("host")}/me`;
-  console.log(uploadPhotoURL);
+  //console.log(uploadPhotoURL);
   await new Email(newUser, uploadPhotoURL).sendWelcome();
 
   await createAndSendToken(res, {statusCode:201, user:newUser, sendUser:true});

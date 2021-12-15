@@ -63,7 +63,7 @@ module.exports.resizeTourImages = catchAsync(async (req, res, next) => {
     .toFile(path.join("public/img/tours", imageCoverFileName)); //path is relative to process.cwd()  
   req.body.imageCover = imageCoverFileName;
 
-  console.log(imageCoverFileName);
+  //console.log(imageCoverFileName);
     
   //2) Process secondary images  
   req.body.images = [];
@@ -92,18 +92,18 @@ module.exports.resizeTourImages = catchAsync(async (req, res, next) => {
     return promise;
   }));
 
-  await Promise.all( req.files.images.map( async (image,idx) => {
-    const imageName = `tour-${id}-${Date.now()}-${idx+1}.jpeg`;    
-    await sharp(image.buffer)
-      .resize(2000, 1333)
-      .toFormat("jpeg")
-      .jpeg({quality: 90})
-      .toFile(path.join("public/img/tours", imageName)); 
-    //console.log(image.originalname,imageName);
-    req.body.images.push(imageName);  
-  }));  
+  // await Promise.all( req.files.images.map( async (image,idx) => {
+  //   const imageName = `tour-${id}-${Date.now()}-${idx+1}.jpeg`;    
+  //   await sharp(image.buffer)
+  //     .resize(2000, 1333)
+  //     .toFormat("jpeg")
+  //     .jpeg({quality: 90})
+  //     .toFile(path.join("public/img/tours", imageName)); 
+  //   //console.log(image.originalname,imageName);
+  //   req.body.images.push(imageName);  
+  // }));  
 
-  console.log("ALL DONE");
+  //console.log("ALL DONE");
   next();
 });
 

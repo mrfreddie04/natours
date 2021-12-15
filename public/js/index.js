@@ -1,12 +1,12 @@
 /* eslint-disable */
 import "@babel/polyfill";
-import 'mapbox-gl/dist/mapbox-gl.css';
+//import 'mapbox-gl/dist/mapbox-gl.css';
 import { login, logout } from "./login";
 import { updateSettings } from "./update-settings";
 import { displayMap } from "./mapbox";
 import { bookTour } from "./stripe";
 
-console.log("Hello from index.js");
+//console.log("Hello from index.js");
 
 //1) Get DOM elements 
 const loginForm = document.querySelector(".form--login");

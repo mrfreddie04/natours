@@ -160,7 +160,7 @@ tourSchema.pre("save", function(next) {
 //Query Middleware - runs before select query is executed
 tourSchema.pre(/^find/, function(next) {
   this.find({ secretTour: {$ne: true}});
-  this.start = Date.now();
+  //this.start = Date.now();
   next();
 });
 
@@ -182,10 +182,10 @@ tourSchema.pre(/^find/, function(next) {
 // });
 
 // eslint-disable-next-line prefer-arrow-callback
-tourSchema.post(/^find/, function(docs, next) {  
-  //console.log(`Execution time: ${Date.now() - this.start} ms`);
-  next();
-});
+// tourSchema.post(/^find/, function(docs, next) {  
+//   //console.log(`Execution time: ${Date.now() - this.start} ms`);
+//   next();
+// });
 
 //Aggregation Middleware
 // tourSchema.pre("aggregate", function(next) {

@@ -2,8 +2,6 @@ const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const app = require('./app');
 
-//console.log(process.env.NODE_ENV , app.get('env'));
-
 process.env.NODE_ENV = process.env.NODE_ENV || app.get('env');
 
 if (process.env.NODE_ENV === 'production') {
@@ -75,7 +73,5 @@ process.on("uncaughtException", async (err) => {
 
 start();
 console.log('Server is starting...');
-
-//console.log(obj.value.prop);
 
 

@@ -9,7 +9,7 @@ const sendErrorDev = (err, req, res) => {
       error: err,
     });
   } else {
-    console.error("Error", err);
+    console.error("Error 💥", err);
     res.status(err.statusCode).render("error",{
       title: "Something went wrong!",
       message: err.message
@@ -29,7 +29,7 @@ const sendErrorProd = (err, req, res) => {
     } else {
       //Programming or unknown error - we do not want to leak the details to the client
       //1) Log to the log - should use a logging library (in real app):
-      console.error("Error", err);
+      console.error("Error 💥", err);
       //2) Send a generic message to the user
       return res.status(500).json({
         status: "error",
@@ -47,7 +47,7 @@ const sendErrorProd = (err, req, res) => {
     } else {
       //Programming or unknown error - we do not want to leak the details to the client
       //1) Log to the log - should use a logging library (in real app):
-      console.error("Error", err);
+      console.error("Error 💥", err);
       //2) Send a generic message to the user
       return res.status(500).render("error",{
         title: "Something went wrong!",
