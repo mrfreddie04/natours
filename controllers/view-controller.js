@@ -36,6 +36,19 @@ module.exports.setCSPHeaders = (req, res, next) => {
   next();
 }
 
+module.exports.alerts = (req, res, next) => {
+  const {alert} = req.query;
+  if(alert === "booking") {
+    res.locals.alert = `Your booking was successful. Please check your email for a confirmation If your booking does not show up here immediately, please come back and check later`;
+    res.locals.alertType = "success";
+  }  
+  if(alert === "booking-cancellation") {
+    res.locals.alert = `Your booking was cancelled`;    
+    res.locals.alertType = "error";
+  }  
+  next();
+}
+
 module.exports.getTour = catchAsync( async(req, res, next) => {
   //Get tour data
   const tour = await Tour.findOne({slug:req.params.slug}).populate({

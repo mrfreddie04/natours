@@ -3,7 +3,7 @@ html
   // HEAD
   include _head
 
-  body
+  body(data-alert=`${alert ? alert: ''}`, data-alert-type=`${alertType ? alertType: ''}`)
     // HEADER
     include _header
 

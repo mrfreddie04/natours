@@ -9,6 +9,8 @@ const router = express.Router();
 //router.use(viewController.setCSPHeaders);
 //router.use(authController.isLoggedIn);
 
+router.use(viewController.alerts);
+
 //we use webhooks - remove bookingController.createBookingCheckout
 //router.get("/", bookingController.createBookingCheckout, authController.isLoggedIn, viewController.getOverview);
 router.get("/", authController.isLoggedIn, viewController.getOverview);

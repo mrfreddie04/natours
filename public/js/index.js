@@ -1,6 +1,7 @@
 /* eslint-disable */
 import "@babel/polyfill";
 //import 'mapbox-gl/dist/mapbox-gl.css';
+import { showAlert } from "./alerts";
 import { login, logout } from "./login";
 import { updateSettings } from "./update-settings";
 import { displayMap } from "./mapbox";
@@ -15,7 +16,8 @@ const userPasswordForm = document.querySelector(".form-user-password");
 const mapBox = document.getElementById('map');
 const logoutBtn = document.querySelector(".nav__el--logout");
 const bookBtn = document.querySelector("#book-tour");
-
+const alertMessage = document.body.dataset.alert;
+const alertType = document.body.dataset.alertType;
 //2) Get Values - cannot get the values here because the page still loads at that moment???
 
 
@@ -81,6 +83,10 @@ if(userPasswordForm) {
 if(mapBox) {
   const locations = JSON.parse(map.dataset.locations);
   displayMap(locations);
+}
+
+if(alertMessage) {
+  showAlert(alertType || "success", alertMessage, 5);
 }
 
 //- Add logout button event handler
