@@ -44,15 +44,19 @@ module.exports.getCheckoutSession = catchAsync( async (req, res, next) => {
     client_reference_id: tourid,
     line_items: [
       {
-        name: `${tour.name} Tour`,
-        description: tour.summary,
-        //must be live images (hosted on the internet) 
-        images: [
-          `https://www.natours.dev/img/tours/${tour.imageCover}`
-        ],
-        amount: tour.price * 100,
-        currency: "usd",
-        quantity: 1
+        quantity: 1,
+        price_data: {
+          unit_amount: tour.price * 100,
+          currency: "usd",
+          product_data: {
+            name: `${tour.name} Tour`,
+            description: tour.summary,
+            //must be live images (hosted on the internet) 
+            images: [
+              `https://www.natours.dev/img/tours/${tour.imageCover}`
+            ]
+          }
+        }
       }
     ]
   });
@@ -81,7 +85,8 @@ module.exports.getCheckoutSession = catchAsync( async (req, res, next) => {
 const createBookingCheckout =  async(session) => {
   const tour = session.client_reference_id;
   const user = (await User.findOne({email:session.customer_email}))._id;
-  const price = session.line_items[0].amount/100;
+  //const price = session.line_items[0].amount/100;
+  const price = session.amount_total/100;
 
   await Booking.create({user, tour, price});
 };
@@ -91,13 +96,16 @@ module.exports.webhookCheckout = catchAsync( async(req, res, next) => {
   const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 
   //read stripe signature from headers
-  const signature = req.header("stripe-signature");
+  const signature = req.headers["stripe-signature"];
 
   //to handle errors resulting from incorrect secret or corrupted signature
   let event;
   try {
     //create stripe event 
-    event = stripe.webhooks.constructEvent(req.body, signature, process.env.STRIPE_WEBHOOK_SECRET);
+    event = stripe.webhooks.constructEvent(
+      req.body, 
+      signature, 
+      process.env.STRIPE_WEBHOOK_SECRET);
   } catch(err) {
     //send back error to STRIPE - stripe will receive this messgae, because this request was originated by stripe!
     return res.status(400).send(`Webhook error: ${err.message}`);

@@ -8,6 +8,7 @@ const xss = require("xss-clean");
 const hpp = require("hpp");
 const morgan = require('morgan');
 const cors = require("cors");
+//const bodyParser = require('body-parser');
 const compression = require("compression");
 
 const AppError = require("./utils/app-error");
@@ -58,7 +59,11 @@ const limiter = rateLimit({
 app.use("/api",limiter);
 
 //add raw body parsing for this route
-app.post("/webhook-checkout", express.raw({type:"application/json"}), bookingController.webhookCheckout);
+app.post(
+  "/webhook-checkout", 
+  express.raw({type:"application/json"}), 
+  bookingController.webhookCheckout
+);
 
 //Parse data from body (of ajax/json request) into req.body
 app.use(express.json({limit: "10kb"}));
