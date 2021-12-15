@@ -2,7 +2,7 @@
   "name": "4-natours",
   "version": "1.0.0",
   "engines": {
-    "node": ">=14.0.0"
+    "node": "^14"
   },
   "description": "Learning node, express, mongoDB",
   "main": "app.js",
