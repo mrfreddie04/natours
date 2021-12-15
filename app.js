@@ -18,6 +18,7 @@ const reviewRouter = require('./routes/review-routes');
 const bookingRouter = require('./routes/booking-routes');
 const viewRouter = require('./routes/view-routes');
 
+//Create express app
 const app = express();
 
 //1. Express settings - set up template engine
@@ -53,7 +54,6 @@ app.use(express.urlencoded({extended: true, limit: "10kb"}));
 
 //Parse data from cookies into req.cookies
 app.use(cookieParser());
-
 
 //Data Sanitization - clean data stored in req.body
 app.use(mongoSanitize()); //NoSQL injection
