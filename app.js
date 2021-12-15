@@ -7,6 +7,7 @@ const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
 const hpp = require("hpp");
 const morgan = require('morgan');
+const cors = require("cors");
 const compression = require("compression");
 
 const AppError = require("./utils/app-error");
@@ -26,6 +27,12 @@ const app = express();
 app.enable('trust proxy');
 
 //1. Express settings - set up template engine
+app.use(cors());
+
+//similar to app.get(), app.post()
+//it is not to set any options, but to respons to options request
+app.options("*",cors());
+
 app.set("view engine","pug");
 app.set("views",path.join(__dirname,"views"));
 
