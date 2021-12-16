@@ -35,6 +35,7 @@ const multerFilter = (req, file, cb) => {
 };
 
 //upload is a configured multer object //function multer(options?: multer.Options): multer.Multer;
+//const upload = multer({ dest: "public/img/users"}); - easiest config - save with random unique names to dest folder
 const upload = multer({ 
   storage: multerStorage,
   fileFilter: multerFilter
